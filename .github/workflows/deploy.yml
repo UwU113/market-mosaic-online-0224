@@ -1,0 +1,37 @@
+name: Deploy React App to GitHub Pages
+
+on:
+  push:
+    branches:
+      - main  # Hoặc nhánh mà bạn muốn deploy tự động khi có thay đổi
+  workflow_dispatch: # Cho phép trigger thủ công
+
+permissions:
+  contents: write  # Cần quyền ghi để tạo nhánh gh-pages
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Build React app
+        run: npm run build  # Dùng script build của bạn (vite build)
+
+      - name: Deploy to GitHub Pages
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./dist  # Đường dẫn output của Vite (hoặc build cho CRA)
+          publish_branch: gh-pages  # Nhánh deploy lên GitHub Pages
+          force_orphan: true  # Tạo nhánh gh-pages mới nếu chưa có
