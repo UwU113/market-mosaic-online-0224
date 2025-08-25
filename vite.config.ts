@@ -19,4 +19,5 @@ export default defineConfig(({ mode }) => ({
       "@": path.resolve(__dirname, "./src"),
     },
   },
+  base: "/market-mosaic-online-0224/",  // Đảm bảo base path đúng với tên repo
 }));
